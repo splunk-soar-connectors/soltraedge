@@ -15,14 +15,14 @@ def parse_taxii_message(taxii_message, base_connector=None):
 
     number_of_cbs = len(taxii_message.content_blocks)
 
-    if (not number_of_cbs):
+    if not number_of_cbs:
         return {'error': 'no control blocks found'}
 
     packages = []
 
     for i, cb in enumerate(taxii_message.content_blocks):
 
-        if (base_connector):
+        if base_connector:
             base_connector.send_progress("Parsing Content Block # {0}".format(i))
 
         # Give it to the stix parser to create the containers and artifacts
@@ -34,7 +34,7 @@ def parse_taxii_message(taxii_message, base_connector=None):
 
         package = sp.parse_stix(cstrio, base_connector)
 
-        if (package):
+        if package:
             # print (json.dumps(package, indent=' ' * 4))
             packages.append(package)
 
@@ -57,7 +57,7 @@ if __name__ == '__main__':
             try:
                 f.seek(0)
                 package = sp.parse_stix(f, None)
-                if (package):
+                if package:
                     packages = [package]
                     results = sp.parse_packages(packages, None)
             except:

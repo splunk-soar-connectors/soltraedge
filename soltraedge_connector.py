@@ -73,15 +73,15 @@ class SoltraedgeConnector(BaseConnector):
     def _add_observable(self, observable, container_artifacts, data):
 
         # if any artifacts are present add them
-        if ('artifacts' in observable):
+        if 'artifacts' in observable:
             container_artifacts.extend(observable['artifacts'])
 
         # if any observable of this observable
-        if ('observables' not in observable):
+        if 'observables' not in observable:
             return
 
         for child_observable in observable['observables']:
-            if (child_observable not in data):
+            if child_observable not in data:
                 continue
 
             self._add_observable(data[child_observable], container_artifacts, data)
@@ -100,15 +100,15 @@ class SoltraedgeConnector(BaseConnector):
         for i, result in enumerate(results):
 
             # container is a dictionary of a single container and artifacts
-            if ('container' not in result):
+            if 'container' not in result:
                 continue
 
             # container is a dictionary of a single container and artifacts
-            if ('artifacts' not in result):
+            if 'artifacts' not in result:
                 # igonore containers without artifacts
                 continue
 
-            if (len(result['artifacts']) == 0):
+            if len(result['artifacts']) == 0:
                 # igonore containers without artifacts
                 continue
 
@@ -121,10 +121,10 @@ class SoltraedgeConnector(BaseConnector):
             ret_val, response, container_id = self.save_container(result['container'])
             self.debug_print("save_container returns, value: {0}, reason: {1}".format(ret_val, response))
 
-            if (phantom.is_fail(ret_val)):
+            if phantom.is_fail(ret_val):
                 continue
 
-            if (not container_id):
+            if not container_id:
                 continue
 
             # set the size of the artifacts to max configured for this ingestion
@@ -136,20 +136,20 @@ class SoltraedgeConnector(BaseConnector):
 
             for j, artifact in enumerate(artifacts):
 
-                if ('source_data_identifier' not in artifact):
+                if 'source_data_identifier' not in artifact:
                     artifact['source_data_identifier'] = j
 
                 self.send_progress("Saving Container # {0}, Artifact # {1}".format(i + 1, j + 1))
                 artifact['container_id'] = container_id
                 artifact.update(_artifact_common)
 
-                if ((j + 1) == len_artifacts):
+                if (j + 1) == len_artifacts:
                     artifact['run_automation'] = True
 
                 ret_val, status_string, artifact_id = self.save_artifact(artifact)
                 self.debug_print("save_artifact returns, value: {0}, reason: {1}, artifact_id: {2}".format(ret_val, status_string, artifact_id))
 
-            if (containers_processed >= container_count):
+            if containers_processed >= container_count:
                 break
 
         self.send_progress(" ")
@@ -157,7 +157,7 @@ class SoltraedgeConnector(BaseConnector):
 
     def _get_start_end_time(self, param):
 
-        if (self.is_poll_now()):
+        if self.is_poll_now():
             # get data from app_config
             end_time = int(time.mktime(datetime.utcnow().timetuple())) * 1000
             num_days = int(self.get_app_config().get(SOLTRAEDGE_JSON_DEF_NUM_DAYS))
@@ -173,7 +173,7 @@ class SoltraedgeConnector(BaseConnector):
         self.debug_print("start_time: {0} end_time: {1}".format(start_time, end_time))
 
         # validate the time
-        if (end_time < start_time):
+        if end_time < start_time:
             return (phantom.APP_ERROR, SOLTRAEDGE_ERR_END_TIME_LT_START_TIME, None, None)
 
         start_ts = self._get_str_from_epoch(start_time)
@@ -184,12 +184,12 @@ class SoltraedgeConnector(BaseConnector):
     def _on_poll(self, param):
 
         # Connect to the server
-        if (phantom.is_fail(self._create_client(param))):
+        if phantom.is_fail(self._create_client(param)):
             return self.get_status()
 
         (ret_val, ret_msg, start_ts, end_ts) = self._get_start_end_time(param)
 
-        if (phantom.is_fail(ret_val)):
+        if phantom.is_fail(ret_val):
             return self.set_status(ret_val, ret_msg)
 
         config = self.get_config()
@@ -214,7 +214,7 @@ class SoltraedgeConnector(BaseConnector):
         except Exception as e:
             return self.set_status(phantom.APP_ERROR, SOLTRAEDGE_ERR_CONNECTING_TO_SERVER, e)
 
-        if (type(http_resp) == urllib.error.HTTPError):
+        if type(http_resp) == urllib.error.HTTPError:
             # Looks like an error
             return self.set_status(phantom.APP_ERROR, SOLTRAEDGE_ERR_HTTP_ERROR, code=http_resp.code, reason=http_resp.reason)
 
@@ -232,14 +232,14 @@ class SoltraedgeConnector(BaseConnector):
 
         self.save_progress(SOLTRAEDGE_GOT_CB, len_cb=number_of_cbs)
 
-        if (not number_of_cbs):
+        if not number_of_cbs:
             return self.set_status(phantom.APP_SUCCESS)
 
         self.save_progress("Processing Control Blocks for relations")
 
         results = taxii_parser.parse_taxii_message(taxii_message, self)
 
-        if ('error' in results):
+        if 'error' in results:
             # Error
             return self.set_status(phantom.APP_ERROR, results['error'])
 
@@ -250,7 +250,7 @@ class SoltraedgeConnector(BaseConnector):
     def _test_connectivity(self, param):
 
         # Connect to the server
-        if (phantom.is_fail(self._create_client(param))):
+        if phantom.is_fail(self._create_client(param)):
             self.append_to_message(SOLTRAEDGE_ERR_CONNECTIVITY_TEST)
             return self.get_status()
 
@@ -273,7 +273,7 @@ class SoltraedgeConnector(BaseConnector):
 
         self.save_progress(SOLTRAEDGE_VALIDATING_FEED)
 
-        if (type(http_resp) == urllib.error.HTTPError):
+        if type(http_resp) == urllib.error.HTTPError:
             # Looks like an error
             self.set_status(phantom.APP_ERROR, SOLTRAEDGE_ERR_HTTP_ERROR, code=http_resp.code, reason=http_resp.reason)
             self.append_to_message(SOLTRAEDGE_ERR_CONNECTIVITY_TEST)
@@ -297,7 +297,7 @@ class SoltraedgeConnector(BaseConnector):
                 found = True
                 break
 
-        if (not found):
+        if not found:
             self.save_progress(SOLTRAEDGE_ERR_COLLECTION_NOT_FOUND, collection=collection_name)
             self.save_progress(SOLTRAEDGE_MSG_COLLECTION_LIST, collections='\n'.join(collection_names))
             return self.set_status(phantom.APP_ERROR, SOLTRAEDGE_ERR_CONNECTIVITY_TEST)
@@ -316,14 +316,14 @@ class SoltraedgeConnector(BaseConnector):
         result = None
         action = self.get_action_identifier()
 
-        if (action == phantom.ACTION_ID_INGEST_ON_POLL):
+        if action == phantom.ACTION_ID_INGEST_ON_POLL:
             start_time = time.time()
             result = self._on_poll(param)
             end_time = time.time()
             diff_time = end_time - start_time
             human_time = str(timedelta(seconds=int(diff_time)))
             self.save_progress("Time taken: {0}".format(human_time))
-        elif (action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY):
+        elif action == phantom.ACTION_ID_TEST_ASSET_CONNECTIVITY:
             result = self._test_connectivity(param)
 
         return result
@@ -336,7 +336,7 @@ if __name__ == '__main__':
     import pudb
     pudb.set_trace()
 
-    if (len(sys.argv) < 2):
+    if len(sys.argv) < 2:
         print("No test json specified as input")
         exit(0)
 
