@@ -1,16 +1,8 @@
-# --
 # File: soltraedge_connector.py
+# Copyright (c) 2014-2021 Splunk Inc.
 #
-# Copyright (c) Phantom Cyber Corporation, 2014-2016
-#
-# This unpublished material is proprietary to Phantom Cyber.
-# All rights reserved. The methods and
-# techniques described herein are considered trade secrets
-# and/or confidential. Reproduction or distribution, in whole
-# or in part, is forbidden except by express written permission
-# of Phantom Cyber.
-#
-# --
+# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
+# without a valid written license from Splunk Inc. is PROHIBITED.
 
 # Phantom imports
 import phantom.app as phantom
@@ -28,7 +20,9 @@ import libtaxii as lt
 import libtaxii.clients as tc
 import libtaxii.messages_11 as tm11
 from libtaxii.constants import *
-import urllib2
+import urllib.request
+import urllib.error
+import urllib.parse
 # from collections import defaultdict
 import simplejson as json
 
@@ -220,7 +214,7 @@ class SoltraedgeConnector(BaseConnector):
         except Exception as e:
             return self.set_status(phantom.APP_ERROR, SOLTRAEDGE_ERR_CONNECTING_TO_SERVER, e)
 
-        if (type(http_resp) == urllib2.HTTPError):
+        if (type(http_resp) == urllib.error.HTTPError):
             # Looks like an error
             return self.set_status(phantom.APP_ERROR, SOLTRAEDGE_ERR_HTTP_ERROR, code=http_resp.code, reason=http_resp.reason)
 
@@ -279,7 +273,7 @@ class SoltraedgeConnector(BaseConnector):
 
         self.save_progress(SOLTRAEDGE_VALIDATING_FEED)
 
-        if (type(http_resp) == urllib2.HTTPError):
+        if (type(http_resp) == urllib.error.HTTPError):
             # Looks like an error
             self.set_status(phantom.APP_ERROR, SOLTRAEDGE_ERR_HTTP_ERROR, code=http_resp.code, reason=http_resp.reason)
             self.append_to_message(SOLTRAEDGE_ERR_CONNECTIVITY_TEST)
@@ -334,6 +328,7 @@ class SoltraedgeConnector(BaseConnector):
 
         return result
 
+
 if __name__ == '__main__':
 
     import sys
@@ -342,7 +337,7 @@ if __name__ == '__main__':
     pudb.set_trace()
 
     if (len(sys.argv) < 2):
-        print "No test json specified as input"
+        print("No test json specified as input")
         exit(0)
 
     with open(sys.argv[1]) as f:
@@ -353,6 +348,6 @@ if __name__ == '__main__':
         connector = SoltraedgeConnector()
         connector.print_progress_message = True
         ret_val = connector._handle_action(json.dumps(in_json), None)
-        print ret_val
+        print(ret_val)
 
     exit(0)

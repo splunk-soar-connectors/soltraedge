@@ -1,24 +1,12 @@
-#!/usr/bin/env python2.7
-
-# --
 # File: taxii_parser.py
+# Copyright (c) 2014-2021 Splunk Inc.
 #
-# Copyright (c) Phantom Cyber Corporation, 2014-2016
-#
-# This unpublished material is proprietary to Phantom Cyber.
-# All rights reserved. The methods and
-# techniques described herein are considered trade secrets
-# and/or confidential. Reproduction or distribution, in whole
-# or in part, is forbidden except by express written permission
-# of Phantom Cyber.
-#
-# This file contains the code to parset a STIX xml file.
-#
-# --
+# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
+# without a valid written license from Splunk Inc. is PROHIBITED.
 
 import sys
+import io
 import simplejson as json
-import cStringIO
 import libtaxii as lt
 import stix_parser as sp
 
@@ -40,7 +28,7 @@ def parse_taxii_message(taxii_message, base_connector=None):
         # Give it to the stix parser to create the containers and artifacts
         # This code is the only place where the stix parsing will be written
         stix_xml = cb.content
-        cstrio = cStringIO.StringIO()
+        cstrio = io.BytesIO()
         cstrio.write(stix_xml)
         cstrio.seek(0)
 

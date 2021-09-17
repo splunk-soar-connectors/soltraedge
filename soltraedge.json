@@ -1,20 +1,57 @@
 {
     "appid": "edfe98c0-68fa-44a8-aca6-0d189d3a455e",
     "name": "Soltra Edge",
-    "description": "This App acts as a STIX client and implements the ingest action to pull data from a Soltra Edge device to create containers and artifacts.",
+    "description": "This App acts as a STIX client and implements the ingest action to pull data from a Soltra Edge device to create containers and artifacts",
     "type": "threat intel",
-    "publisher": "Phantom",
+    "publisher": "Splunk",
     "package_name": "phantom_soltraedge",
-    "main_module": "soltraedge_connector.pyc",
-    "app_version": "1.2.28",
+    "main_module": "soltraedge_connector.py",
+    "app_version": "2.0.0",
     "utctime_updated": "2018-12-07T01:38:39.000000Z",
     "product_vendor": "Soltra",
     "product_name": "Edge",
-    "logo": "soltra.png",
-    "license": "Copyright (c) Phantom Cyber Corporation 2015-2016",
+    "logo": "logo_soltra.svg",
+    "logo_dark": "logo_soltra_dark.svg",
+    "license": "Copyright (c) 2014-2021 Splunk Inc.",
     "product_version_regex": ".*",
-    "min_phantom_version": "1.2.236",
+    "min_phantom_version": "4.9.39220",
+    "latest_tested_versions": [
+        "v3.5"
+    ],
+    "python_version": "3",
     "app_config_render": "default",
+    "pip_dependencies": {
+        "wheel": [
+            {
+                "module": "libtaxii",
+                "input_file": "wheels/libtaxii-1.1.119-py2.py3-none-any.whl"
+            },
+            {
+                "module": "stix",
+                "input_file": "wheels/stix-1.2.0.11-py2.py3-none-any.whl"
+            },
+            {
+                "module": "mixbox",
+                "input_file": "wheels/mixbox-1.0.5-py2.py3-none-any.whl"
+            },
+            {
+                "module": "ordered_set",
+                "input_file": "wheels/ordered-set-4.0.2.tar.gz"
+            },
+            {
+                "module": "cybox",
+                "input_file": "wheels/cybox-2.1.0.21-py2.py3-none-any.whl"
+            },
+            {
+                "module": "jsonpath_rw",
+                "input_file": "wheels/jsonpath-rw-1.4.0.tar.gz"
+            },
+            {
+                "module": "ply",
+                "input_file": "wheels/ply-3.11-py2.py3-none-any.whl"
+            }
+        ]
+     },
     "configuration": {
         "device": {
             "data_type": "string",
@@ -45,7 +82,7 @@
             "data_type": "string",
             "order": 4,
             "description": "Collection (Feed) name used for ingestion",
-            "verbose": "During ingestion Phantom will query the details of only this collection, which must be pre-configured on Soltra Edge",
+            "verbose": "During ingestion Phantom will query the details of only this collection, which must be pre-configured on Soltra Edge.",
             "required": true,
             "default": "system.Default"
         }
@@ -62,7 +99,7 @@
     "actions": [
         {
             "action": "test connectivity",
-            "description": "Validate the asset configuration for connectivity. This action validates the feed name on Soltra Edge to check the connection and credentials.",
+            "description": "Validate the asset configuration for connectivity. This action validates the feed name on Soltra Edge to check the connection and credentials",
             "type": "test",
             "identifier": "test_asset_connectivity",
             "read_only": true,
@@ -72,7 +109,7 @@
         },
         {
             "action": "on poll",
-            "description": "Callback action for the on_poll ingest functionality.",
+            "description": "Callback action for the on_poll ingest functionality",
             "type": "ingest",
             "identifier": "on_poll",
             "read_only": true,
@@ -80,20 +117,20 @@
                 "start_time": {
                     "data_type": "numeric",
                     "description": "Start of time range, in epoch time (milliseconds)",
-                    "verbose": "If not specified, the default is past 10 days"
+                    "verbose": "If not specified, the default is past 10 days."
                 },
                 "end_time": {
                     "data_type": "numeric",
                     "description": "End of time range, in epoch time (milliseconds)",
-                    "verbose": "If not specified, the default is now"
+                    "verbose": "If not specified, the default is now."
                 },
                 "container_count": {
                     "data_type": "numeric",
-                    "description": "Maximum number of container records to query for."
+                    "description": "Maximum number of container records to query for"
                 },
                 "artifact_count": {
                     "data_type": "numeric",
-                    "description": "Maximum number of artifact records to query for."
+                    "description": "Maximum number of artifact records to query for"
                 }
             },
             "output": [],

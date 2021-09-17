@@ -1,25 +1,13 @@
-#!/usr/bin/env python2.7
-
-# --
-# File: stix_parse.py
+# File: stix_parser.py
+# Copyright (c) 2014-2021 Splunk Inc.
 #
-# Copyright (c) Phantom Cyber Corporation, 2014-2016
-#
-# This unpublished material is proprietary to Phantom Cyber.
-# All rights reserved. The methods and
-# techniques described herein are considered trade secrets
-# and/or confidential. Reproduction or distribution, in whole
-# or in part, is forbidden except by express written permission
-# of Phantom Cyber.
-#
-# This file contains the code to parset a STIX xml file.
-#
-# --
+# SPLUNK CONFIDENTIAL - Use or disclosure of this material in whole or in part
+# without a valid written license from Splunk Inc. is PROHIBITED.
 
 import sys
 import simplejson as json
 from stix.core import STIXPackage
-import cStringIO
+import io
 from collections import OrderedDict
 from jsonpath_rw import parse as jp_parse
 import uuid
@@ -769,8 +757,8 @@ def parse_stix(xml_file_object, base_connector=None):
             base_connector.debug_print("Invalid input xml_file_object")
         return None
 
-    # The django request object does not support seek, so move it to cSTringIO
-    cstrio = cStringIO.StringIO()
+    # The django request object does not support seek, so move it to io
+    cstrio = io.BytesIO()
     cstrio.write(xml_file_object.read())
     cstrio.seek(0)
 
@@ -803,7 +791,7 @@ def parse_stix(xml_file_object, base_connector=None):
     # TTPs
     if (stix_pkg.ttps):
         package['ttps'] = OrderedDict()
-        for ttp in stix_pkg.ttps:
+        for ttp in stix_pkg.ttps.ttp:
             parse_ttp(ttp, package)
 
     # Reports
@@ -827,7 +815,7 @@ def _get_value(in_dict, in_key, def_val=None, strip_it=True):
     if (in_key not in in_dict):
         return def_val
 
-    if (type(in_dict[in_key]) != str) and (type(in_dict[in_key]) != unicode):
+    if (type(in_dict[in_key]) != str):
         return in_dict[in_key]
 
     value = in_dict[in_key].strip() if (strip_it) else in_dict[in_key]
@@ -949,8 +937,8 @@ def create_container_from_package(package, observables, base_connector):
     # Return empty container
     return {}
 
-def get_container_sensitivity(input_data, base_connector):
 
+def get_container_sensitivity(input_data, base_connector):
 
     try:
         # need loads twice, has been encoded twice previously
@@ -974,6 +962,7 @@ def get_container_sensitivity(input_data, base_connector):
 
         # Default value
         return 'amber'
+
 
 def parse_packages(packages, base_connector):
 
@@ -1030,7 +1019,7 @@ if __name__ == '__main__':
 
         if (type(package) == str):
             # Error
-            print "Error: {0}".format(package)
+            print("Error: {0}".format(package))
             exit(1)
 
         if (package):
