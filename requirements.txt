@@ -1,0 +1,7 @@
+libtaxii==1.1.119
+stix==1.2.0.11
+mixbox==1.0.5
+ordered-set==4.0.2
+cybox==2.1.0.21
+jsonpath-rw==1.4.0
+ply==3.11
