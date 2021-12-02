@@ -1,0 +1,4 @@
+jsonpath-rw==1.4.0
+libtaxii==1.1.118
+simplejson==3.17.2
+stix==1.2.0.10

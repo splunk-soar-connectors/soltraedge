@@ -99,5 +99,53 @@
             "output": [],
             "versions": "EQ(*)"
         }
-    ]
+    ],
+    "pip_dependencies": {
+        "wheel": [
+            {
+                "module": "cybox",
+                "input_file": "wheels/cybox-2.1.0.21-py2.py3-none-any.whl"
+            },
+            {
+                "module": "decorator",
+                "input_file": "wheels/decorator-4.4.2-py2.py3-none-any.whl"
+            },
+            {
+                "module": "jsonpath_rw",
+                "input_file": "wheels/jsonpath_rw-1.4.0-py2-none-any.whl"
+            },
+            {
+                "module": "libtaxii",
+                "input_file": "wheels/libtaxii-1.1.118-py2.py3-none-any.whl"
+            },
+            {
+                "module": "mixbox",
+                "input_file": "wheels/mixbox-1.0.5-py2.py3-none-any.whl"
+            },
+            {
+                "module": "ordered_set",
+                "input_file": "wheels/ordered_set-3.1.1-py2.py3-none-any.whl"
+            },
+            {
+                "module": "ply",
+                "input_file": "wheels/ply-3.11-py2.py3-none-any.whl"
+            },
+            {
+                "module": "python_dateutil",
+                "input_file": "wheels/python_dateutil-2.8.2-py2.py3-none-any.whl"
+            },
+            {
+                "module": "six",
+                "input_file": "wheels/six-1.16.0-py2.py3-none-any.whl"
+            },
+            {
+                "module": "stix",
+                "input_file": "wheels/stix-1.2.0.10-py2.py3-none-any.whl"
+            },
+            {
+                "module": "weakrefmethod",
+                "input_file": "wheels/weakrefmethod-1.0.3-py2-none-any.whl"
+            }
+        ]
+    }
 }
