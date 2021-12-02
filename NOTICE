@@ -1,0 +1,41 @@
+Splunk SOAR Soltra Edge
+Copyright 2021 Splunk Inc.
+
+Third-party Software Attributions:
+
+Library: jsonpath-rw
+Version: 1.4.0
+License: Apache 2.0
+Copyright 2013 Kenneth Knowles
+
+Library: weakrefmethod
+Version: 1.0.3
+License: Python 2.0
+Copyright 1991-1995 Stichting Mathematisch Centrum Amsterdam,
+Copyright 2001-2002 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010,
+
+Library: ordered-set
+Version: 4.0.2
+License: MIT
+Copyright 2018 Luminoso Technologies, Inc
+
+Library: simplejson
+Version: 3.17.2
+License: MIT
+License: Academic 2.1
+Copyright 2003-2004 Lawrence E
+Copyright 2006 Bob Ippolito
+
+Library: pudb
+Version: 2019.2
+License: MIT
+Copyright 2009 Andreas Kloeckner and contributors
+
+Library: python-dateutil
+Version: 2.8.2
+License: BSD 3
+License: Apache 2.0
+Copyright 2017 dateutil contributors (see AUTHORS file)
+Copyright 2015 - dateutil contributors (see AUTHORS file)
+Copyright 2017 Paul Ganssle <paul@ganssle.io>
+Copyright 2015 - Paul Ganssle <paul@ganssle.io>
